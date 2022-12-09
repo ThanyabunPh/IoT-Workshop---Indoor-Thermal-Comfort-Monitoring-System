@@ -41,7 +41,7 @@ WRITE_API_KEY = "WRITE_API_KEY"
 while(True):
   
   try:
-      LEDGreen.value(0)
+      LEDPin.value(0)
       
       sensor.measure()
       temp = sensor.temperature()
