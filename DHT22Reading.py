@@ -6,7 +6,8 @@ import dht
 
 rtc = machine.RTC()
 rtc.datetime((2022, 6, 30, 5, 14, 58, 0, 362)) 
-# set a specific date and time 
+# set a specific date and time
+# (year, month, day, hour, minute, second, microsecond, time zone)
 
 # Create a dht object that refers to the sensor data pin, in this case is PIN 15
 SENSOR_PIN = 15 
