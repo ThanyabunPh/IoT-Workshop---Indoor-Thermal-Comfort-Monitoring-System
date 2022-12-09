@@ -12,8 +12,7 @@ rtc.datetime((2022, 6, 30, 5, 14, 58, 0, 362))
 SENSOR_PIN = 15 
 sensor = dht.DHT22(machine.Pin(SENSOR_PIN))
 
-LEDGreen = machine.Pin(32, machine.Pin.OUT)
-LEDRed = machine.Pin(33, machine.Pin.OUT)
+LEDPin = machine.Pin(32, machine.Pin.OUT)
 
 WiFi_SSID = "WiFi_SSID"
 WiFi_PASS = "WiFi_PASS"
@@ -43,7 +42,6 @@ while(True):
   
   try:
       LEDGreen.value(0)
-      LEDRed.value(0)
       
       sensor.measure()
       temp = sensor.temperature()
@@ -55,12 +53,17 @@ while(True):
       
       thermalComfort = 'n/a'
       
-      if (temp < 24.1 and hum < 90.1) or (temp < 27.1 and hum < 40.1) or (temp < 29.1 and hum < 10.1) : 
-        LEDGreen.value(1)
-        thermalComfort = 'Comfortable'
+      if (temp < 24.1 and temp > 18.0) and (hum > 80.0): 
+        thermalComfort = 'Good'
+      elif (temp > 24.1 or temp < 18.0): 
+        LEDPin.value(1)
+        thermalComfort = 'Too warm'
+      elif (hum < 80.0): 
+        LEDPin.value(1)
+        thermalComfort = 'Dehydration'
       else: 
-        LEDRed.value(1)
-        thermalComfort = 'Uncomfortable'
+        LEDPin.value(1)
+        thermalComfort = 'Require attention'
       
       print("Time: ",  now, ' - ', thermalComfort)
       print('Sensor Temperature: %3.1f C' %temp)
