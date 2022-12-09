@@ -70,7 +70,7 @@ while(True):
       print('Sensor Humidity: %3.1f %%' %hum)
       print('  ')
       
-      payload = "field1="+str(temp)+"&field2="+str(hum)+"&field3="+str(thermalComfort)
+      payload = "field1="+str(temp)+"&field2="+str(hum)
       
       try:
           print('Posting Data ...')
