@@ -12,14 +12,12 @@ rtc.datetime((2022, 6, 30, 5, 14, 58, 0, 362))
 SENSOR_PIN = 15 
 sensor = dht.DHT22(machine.Pin(SENSOR_PIN))
 
-LEDGreen = machine.Pin(32, machine.Pin.OUT)
-LEDRed = machine.Pin(33, machine.Pin.OUT)
+LEDPin = machine.Pin(32, machine.Pin.OUT)
 
 for i in range(10):
   
   try:
-      LEDGreen.value(0)
-      LEDRed.value(0)
+      LEDPin.value(0)
       
       sensor.measure()
       temp = sensor.temperature()
@@ -29,8 +27,8 @@ for i in range(10):
       
       now = '{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}'.format(t[0], t[1], t[2], t[4], t[5], t[6])
       
-      if temp < 23.0 or temp > 27.0: LEDRed.value(1)
-      else: LEDGreen.value(1)
+      if temp < 23.0 or temp > 27.0: LEDPin.value(1)
+      else: LEDPin.value(0)
       
       print("Time: ",  now)
       print('Sensor Temperature: %3.1f C' %temp)
