@@ -4,10 +4,8 @@ import utime as time
 import machine
 import dht
 import urequests
+import ntptime
 
-
-rtc = machine.RTC()
-rtc.datetime((2022, 6, 30, 5, 14, 58, 0, 362)) 
 # set a specific date and time 
 
 # Create a dht object that refers to the sensor data pin, in this case is PIN 15
@@ -16,9 +14,9 @@ sensor = dht.DHT22(machine.Pin(SENSOR_PIN))
 
 LEDPin = machine.Pin(2, machine.Pin.OUT)
 
-WiFi_SSID = "HELLOWORLD"
-WiFi_PASS = "--------"
-WRITE_API_KEY = "AVF5IDLKET57892J"
+WiFi_SSID = "WIFI_SSID"
+WiFi_PASS = "WIFI_PASS"
+WRITE_API_KEY = "API_KEY"
 
 def connect():
     sta_if = network.WLAN(network.STA_IF)
@@ -37,6 +35,16 @@ def connect():
 import network
 import ssl
 connect()
+
+# Synchronize time using NTP server
+ntptime.settime()
+
+# Get the current time
+year, month, mday, hour, minute, second, weekday, yearday = time.localtime()
+
+# Set RTC
+rtc = machine.RTC()
+rtc.datetime((year, month, mday, 0, hour + 7, minute, second, 0))
 
 
 while(True):

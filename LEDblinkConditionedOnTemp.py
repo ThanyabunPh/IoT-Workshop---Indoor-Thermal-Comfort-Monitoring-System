@@ -3,10 +3,32 @@ import sys
 import utime as time
 import machine
 import dht
+import network
+import ntptime
 
+#  Connect to Wi-Fi
+ssid = "WIFI_SSID"
+password = "WIFI_PASS"
+
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
+wlan.connect(ssid, password)
+
+# Wait for connection
+while not wlan.isconnected():
+    pass
+
+print("Connected to Wi-Fi")
+
+# Synchronize time using NTP server
+ntptime.settime()
+
+# Get the current time
+year, month, mday, hour, minute, second, weekday, yearday = time.localtime()
+
+# Set RTC
 rtc = machine.RTC()
-rtc.datetime((2022, 6, 30, 5, 14, 58, 0, 362)) 
-# set a specific date and time 
+rtc.datetime((year, month, mday, 0, hour + 7, minute, second, 0))
 
 # Create a dht object that refers to the sensor data pin, in this case is PIN 15
 SENSOR_PIN = 15 
