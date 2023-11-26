@@ -3,6 +3,8 @@ import sys
 import utime as time
 import machine
 import dht
+import urequests
+
 
 rtc = machine.RTC()
 rtc.datetime((2022, 6, 30, 5, 14, 58, 0, 362)) 
@@ -12,10 +14,11 @@ rtc.datetime((2022, 6, 30, 5, 14, 58, 0, 362))
 SENSOR_PIN = 15 
 sensor = dht.DHT22(machine.Pin(SENSOR_PIN))
 
-LEDPin = machine.Pin(32, machine.Pin.OUT)
+LEDPin = machine.Pin(2, machine.Pin.OUT)
 
-WiFi_SSID = "WiFi_SSID"
-WiFi_PASS = "WiFi_PASS"
+WiFi_SSID = "HELLOWORLD"
+WiFi_PASS = "--------"
+WRITE_API_KEY = "AVF5IDLKET57892J"
 
 def connect():
     sta_if = network.WLAN(network.STA_IF)
@@ -35,8 +38,6 @@ import network
 import ssl
 connect()
 
-import urequests
-WRITE_API_KEY = "WRITE_API_KEY"
 
 while(True):
   
@@ -52,31 +53,36 @@ while(True):
       now = '{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}'.format(t[0], t[1], t[2], t[4], t[5], t[6])
       
       thermalComfort = 'n/a'
+      thermalEncoding = 0
       
       if (temp < 24.1 and temp > 18.0) and (hum > 80.0): 
         thermalComfort = 'Good'
+        thermalEncoding = 3
       elif (temp > 24.1 or temp < 18.0): 
         LEDPin.value(1)
         thermalComfort = 'Too warm'
+        thermalEncoding = 2
       elif (hum < 80.0): 
         LEDPin.value(1)
         thermalComfort = 'Dehydration'
+        thermalEncoding = 1
       else: 
         LEDPin.value(1)
         thermalComfort = 'Require attention'
+        thermalEncoding = 0
       
       print("Time: ",  now, ' - ', thermalComfort)
       print('Sensor Temperature: %3.1f C' %temp)
       print('Sensor Humidity: %3.1f %%' %hum)
       print('  ')
       
-      payload = "field1="+str(temp)+"&field2="+str(hum)
+      payload = "field1="+str(temp)+"&field2="+str(hum)+"&field3="+str(thermalEncoding)
       
       try:
           print('Posting Data ...')
           response = urequests.post("https://api.thingspeak.com/update?api_key=" + WRITE_API_KEY + "&" + payload)
           response.close()
-          print()
+          print('Completed ...\n')
       except OSError as e:
           print('Publish failed ...', e)
           time.sleep(5)

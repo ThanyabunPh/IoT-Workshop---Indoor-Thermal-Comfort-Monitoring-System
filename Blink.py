@@ -4,7 +4,7 @@ import utime as time
 import machine
 import dht
 
-LEDPin = machine.Pin(32, machine.Pin.OUT)
+LEDPin = machine.Pin(2, machine.Pin.OUT)
 
 for i in range(10):
   

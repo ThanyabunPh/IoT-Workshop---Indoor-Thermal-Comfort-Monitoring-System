@@ -12,7 +12,7 @@ rtc.datetime((2022, 6, 30, 5, 14, 58, 0, 362))
 SENSOR_PIN = 15 
 sensor = dht.DHT22(machine.Pin(SENSOR_PIN))
 
-LEDPin = machine.Pin(32, machine.Pin.OUT)
+LEDPin = machine.Pin(2, machine.Pin.OUT)
 
 for i in range(10):
   
