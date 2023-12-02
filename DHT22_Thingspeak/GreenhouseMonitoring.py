@@ -119,6 +119,7 @@ while (True):
             response = urequests.post("https://api.thingspeak.com/update?api_key=" + WRITE_API_KEY + "&" + payload)
             response.close()
             print('DHT22_Thingspeak ...\n')
+
         except OSError as e:
             # กรณีที่เกิดข้อผิดพลาดในการส่งข้อมูล ให้รีเซ็ตบอร์ด
             print('Publish failed ...', e)
