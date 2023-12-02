@@ -38,13 +38,13 @@ def connect_to_wifi():
 # ชุดคำสั่งสำหรับการตั้งค่าเวลา
 def setting_time():
 
-    # Synchronize time using NTP server
+    # ตั้งค่าเวลาจาก Cloud
     ntptime.settime()
 
-    # Get the current time
+    # รับค่าเวลาปัจจุบันจาก RTC
     year, month, mday, hour, minute, second, weekday, yearday = time.localtime()
 
-    # Set RTC
+    # ปรับเวลาให้เป็นเวลาในประเทศไทย (UTC+7)
     rtc.datetime((year, month, mday, 0, hour + 7, minute, second, 0))
 
 
